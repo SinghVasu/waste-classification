@@ -3,3 +3,4 @@ streamlit_webrtc
 av
 numpy
 tensorflow
+SparseCategoricalCrossentropy
