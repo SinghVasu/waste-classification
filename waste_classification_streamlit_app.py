@@ -17,7 +17,7 @@ RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.goog
 # Load the model
 @st.cache_resource
 def load_model():
-    model_path = r'C:\Users\vsingh1\Desktop\BeClean\waste_classification_modeling\waste_classifier_model.h5'
+    model_path = 'waste_classifier_model.h5'
     model = tf.keras.models.load_model(model_path)
     return model
 
