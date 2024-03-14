@@ -21,7 +21,7 @@ def load_model():
     model_path = 'waste_classifier_model_tf.h5'
     model = tf.keras.models.load_model(model_path, compile=False)
     model.compile(optimizer='adam',
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+                  loss=tf.keras.losses.binary_crossentropy,
                   metrics=['accuracy'])
     return model
 
