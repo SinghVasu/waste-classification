@@ -18,7 +18,7 @@ RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.goog
 # Load and compile the model explicitly
 @st.cache_resource
 def load_model():
-    model_path = 'C:\\Users\\vsingh1\\Desktop\\BeClean\\waste_classification_modeling\\waste_classifier_model_tf.h5'
+    model_path = 'waste_classifier_model_tf.h5'
     model = tf.keras.models.load_model(model_path, compile=False)
     model.compile(optimizer='adam',
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
