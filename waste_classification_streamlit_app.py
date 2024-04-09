@@ -13,7 +13,7 @@ RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.goog
 
 @st.cache_resource
 def load_model():
-    model_path = 'model.pkl'  # Path to your FastAI exported model file
+    model_path = 'model_fastai.pkl'  # Path to your FastAI exported model file
     try:
         learn = load_learner(model_path)
     except Exception as e:
