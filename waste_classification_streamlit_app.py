@@ -7,27 +7,13 @@ from PIL import Image
 import os
 import time
 import csv
+import requests
 
-#------------------------------------------------------------------------------------------------------------
-import hashlib
-
-def calculate_file_checksum(filename, method='sha256'):
-    h = hashlib.new(method)
-    with open(filename, 'rb') as file:
-        while True:
-            chunk = file.read(h.block_size)
-            if not chunk:
-                break
-            h.update(chunk)
-    return h.hexdigest()
-
-checksum = calculate_file_checksum('model_fastai.pkl', 'sha256')
-st.write(f'The SHA256 checksum of the model file is: {checksum}')
-#------------------------------------------------------------------------------------------------------------
-'''
 # Constants
 FEEDBACK_DIR = 'feedback_images'
 CSV_FILENAME = os.path.join(FEEDBACK_DIR, 'feedback.csv')
+MODEL_URL = "https://huggingface.co/VasuSingh/fastai_waste_classification/blob/main/model_fastai.pkl"
+MODEL_PATH = 'model_fastai.pkl'
 
 RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
 
@@ -39,10 +25,19 @@ def setup_directories():
             writer = csv.writer(file)
             writer.writerow(['Image ID', 'Predicted Label', 'Predicted Probability', 'Feedback'])
 
+def download_model(url, destination_path):
+    if not os.path.exists(destination_path):
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open(destination_path, 'wb') as f:
+                f.write(response.content)
+        else:
+            raise Exception(f"Failed to download model: {response.status_code}")
+
 @st.cache_resource
 def load_model():
-    #path = Path('model_fastai.pkl')
-    learn = load_learner('model_fastai.pkl')
+    download_model(MODEL_URL, MODEL_PATH)
+    learn = load_learner(MODEL_PATH)
     return learn
 
 def save_image(image, label, pred_prob=None):
@@ -51,7 +46,6 @@ def save_image(image, label, pred_prob=None):
     filepath = os.path.join(FEEDBACK_DIR, filename)
     image.save(filepath)
     
-    # Write feedback data to CSV
     new_entry = [filename, label, str(pred_prob) if pred_prob else "N/A", 'Feedback']
     with open(CSV_FILENAME, mode='a', newline='') as file:
         writer = csv.writer(file)
@@ -94,4 +88,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-'''
