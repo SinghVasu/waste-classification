@@ -24,8 +24,8 @@ def setup_directories():
 
 @st.cache_resource
 def load_model():
-    path = Path('model_fastai.pkl')
-    learn = load_learner(path)
+    #path = Path('model_fastai.pkl')
+    learn = load_learner('model_fastai.pkl')
     return learn
 
 def save_image(image, label, pred_prob=None):
