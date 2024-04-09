@@ -3,17 +3,19 @@ from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, RTCConfigura
 import av
 import fastai
 from fastai.vision.all import *
+from fastai.learner import load_learner
 from PIL import Image
 import os
 import time
 import csv
 import requests
+import io
 
 # Constants
 FEEDBACK_DIR = 'feedback_images'
 CSV_FILENAME = os.path.join(FEEDBACK_DIR, 'feedback.csv')
 MODEL_URL = "https://huggingface.co/VasuSingh/fastai_waste_classification/blob/main/model_fastai.pkl"
-MODEL_PATH = 'model_fastai.pkl'
+#MODEL_PATH = 'model_fastai.pkl'
 
 RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
 
@@ -25,19 +27,19 @@ def setup_directories():
             writer = csv.writer(file)
             writer.writerow(['Image ID', 'Predicted Label', 'Predicted Probability', 'Feedback'])
 
-def download_model(url, destination_path):
-    if not os.path.exists(destination_path):
-        response = requests.get(url)
-        if response.status_code == 200:
-            with open(destination_path, 'wb') as f:
-                f.write(response.content)
-        else:
-            raise Exception(f"Failed to download model: {response.status_code}")
+def download_model(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        # Load the model directly from the in-memory bytes buffer
+        bytes_buffer = io.BytesIO(response.content)
+        learn = load_learner(bytes_buffer)
+        return learn
+    else:
+        raise Exception(f"Failed to download model: {response.status_code}")
 
 @st.cache_resource
 def load_model():
-    download_model(MODEL_URL, MODEL_PATH)
-    learn = load_learner(MODEL_PATH)
+    learn = download_model(MODEL_URL)
     return learn
 
 def save_image(image, label, pred_prob=None):
