@@ -6,6 +6,7 @@
 
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer, VideoTransformerBase, RTCConfiguration
+import fastai
 from fastai.vision.all import load_learner, PILImage
 import av
 
