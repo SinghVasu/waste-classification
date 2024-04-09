@@ -14,7 +14,7 @@ import io
 # Constants
 FEEDBACK_DIR = 'feedback_images'
 CSV_FILENAME = os.path.join(FEEDBACK_DIR, 'feedback.csv')
-MODEL_URL = "https://huggingface.co/VasuSingh/fastai_waste_classification/blob/main/model_fastai.pkl"
+MODEL_URL = "https://huggingface.co/VasuSingh/fastai_waste_classification/resolve/main/model_fastai.pkl?download=true"
 #MODEL_PATH = 'model_fastai.pkl'
 
 RTC_CONFIGURATION = RTCConfiguration({"iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]})
