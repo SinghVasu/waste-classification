@@ -30,10 +30,18 @@ def setup_directories():
 def download_model(url):
     response = requests.get(url)
     if response.status_code == 200:
+        # Debug: Print the first 100 characters of the response content
+        print(response.content[:100])
+
         # Load the model directly from the in-memory bytes buffer
         bytes_buffer = io.BytesIO(response.content)
-        learn = load_learner(bytes_buffer)
-        return learn
+        try:
+            learn = load_learner(bytes_buffer)
+            return learn
+        except Exception as e:
+            print(f"Error loading the model: {e}")
+            # Additional error handling can be implemented here
+            raise
     else:
         raise Exception(f"Failed to download model: {response.status_code}")
 
