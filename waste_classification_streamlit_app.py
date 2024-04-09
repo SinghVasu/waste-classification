@@ -8,6 +8,23 @@ import os
 import time
 import csv
 
+#------------------------------------------------------------------------------------------------------------
+import hashlib
+
+def calculate_file_checksum(filename, method='sha256'):
+    h = hashlib.new(method)
+    with open(filename, 'rb') as file:
+        while True:
+            chunk = file.read(h.block_size)
+            if not chunk:
+                break
+            h.update(chunk)
+    return h.hexdigest()
+
+checksum = calculate_file_checksum('model_fastai.pkl', 'sha256')
+st.write(f'The SHA256 checksum of the model file is: {checksum}')
+#------------------------------------------------------------------------------------------------------------
+'''
 # Constants
 FEEDBACK_DIR = 'feedback_images'
 CSV_FILENAME = os.path.join(FEEDBACK_DIR, 'feedback.csv')
@@ -77,3 +94,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''
