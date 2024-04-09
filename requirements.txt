@@ -1,6 +1,5 @@
 streamlit
-streamlit_webrtc
+streamlit-webrtc
 av
-numpy
-tensorflow
 fastai
+Pillow
