@@ -3,4 +3,4 @@ streamlit_webrtc
 av
 numpy
 tensorflow
-fastai>=2.0
+fastai
